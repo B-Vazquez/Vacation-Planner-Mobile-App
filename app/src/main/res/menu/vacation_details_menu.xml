@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/share"
+        android:title="Share"
+        android:icon="@drawable/baseline_share_24"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/startnotify"
+        android:title="Set Alert for Start Date"></item>
+
+    <item
+        android:id="@+id/endnotify"
+        android:title="Set Alert for End Date"></item>
+
+</menu>
