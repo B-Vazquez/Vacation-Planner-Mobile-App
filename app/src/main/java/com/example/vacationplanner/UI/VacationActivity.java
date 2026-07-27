@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.vacationplanner.R;
 import com.example.vacationplanner.database.Repository;
 import com.example.vacationplanner.entities.Vacation;
+import com.example.vacationplanner.utilities.SearchUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class VacationActivity extends AppCompatActivity {
     private VacationAdapter vacationAdapter;
     private List<Vacation> allVacations;
     private RecyclerView recyclerView;
-    private Toast toast;
+    private Toast noMatchesToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class VacationActivity extends AppCompatActivity {
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         vacationAdapter.setVacations(allVacations);
-        toast = Toast.makeText(VacationActivity.this, "No matches found.", Toast.LENGTH_SHORT);
+        noMatchesToast = Toast.makeText(VacationActivity.this, "No matches found.", Toast.LENGTH_SHORT);
 
 
         Spinner searchChoice = findViewById(R.id.searchChoice);
@@ -89,41 +90,19 @@ public class VacationActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                List<Vacation> vacations = new ArrayList<>();
-                newText = newText.toLowerCase();
+            public boolean onQueryTextChange(String textToSearchFor) {
+                List<Vacation> vacations;
+                textToSearchFor = textToSearchFor.toLowerCase();
 
-                // Gets the position of the selected search option
-                int pos = searchChoice.getSelectedItemPosition();
+                // Gets the selected option to search stored vacations by.
+                String searchOption = searchChoice.getSelectedItem().toString();
 
                 // Searches vacations based on the selected option
-                switch (pos){
-                    case (0):
-                        for(Vacation i : allVacations){
-                            if(i.getTitle().toLowerCase().contains(newText)){
-                                vacations.add(i);
-                            }
-                        }
-                        break;
-                    case (1):
-                        for(Vacation i : allVacations){
-                            if(i.getHotel().toLowerCase().contains(newText)){
-                                vacations.add(i);
-                            }
-                        }
-                        break;
-                    case (2):
-                        for(Vacation i : allVacations){
-                            if(i.getTransport().toString().toLowerCase().contains(newText)){
-                                vacations.add(i);
-                            }
-                        }
-                        break;
-                }
+                vacations = SearchUtil.searchVacations(searchOption, textToSearchFor, allVacations);
 
                 if(vacations.isEmpty()){
                     vacations = allVacations;
-                    toast.show();
+                    noMatchesToast.show();
                 }
                 vacationAdapter.setVacations(vacations);
                 return false;
