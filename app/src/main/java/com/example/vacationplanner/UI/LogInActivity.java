@@ -57,7 +57,7 @@ public class LogInActivity extends AppCompatActivity {
                     username = editUsername.getText().toString();
                     password = editPassword.getText().toString();
 
-                    if(ValidationUtil.validateUsername(username) && ValidationUtil.validatePassword(password)){
+                    if(ValidationUtil.validateUserCredentials(username, password)){
                         User user = repository.getAllUsers().get(0);
                         if(user.getUsername().equals(username) && cryptoUtil.compare(user.getPassword(), password)){
                             Intent intent = new Intent(LogInActivity.this, VacationActivity.class);
@@ -68,14 +68,7 @@ public class LogInActivity extends AppCompatActivity {
                             editLogInError.setText("The entered username/password does not match stored username/password.");
                         }
                     } else{
-                        if(!ValidationUtil.validateUsername(username)){
-                            editLogInError.setText("The username must contain 1 capital and be at least 6 characters long.");
-                        } else if(!ValidationUtil.validatePassword(password)){
-                            editLogInError.setText("The password must be 8 characters long, contain at least 1 capital, 1 number," +
-                                    " and have no spaces.");
-                        } else {
-                            editLogInError.setText("Please enter a username and password.");
-                        }
+                        editLogInError.setText(ValidationUtil.displayIssueWithUserCredentials(username, password));
                     }
                 } catch (Exception e){
                     throw new RuntimeException(e);

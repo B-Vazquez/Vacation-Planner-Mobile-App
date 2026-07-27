@@ -62,8 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 try{
                     CryptoUtil cryptoUtil = new CryptoUtil(sharedPreferences);
-                    if(ValidationUtil.validateUsername(username) && ValidationUtil.validatePassword(password)
-                            && ValidationUtil.validatePassword(confirmPassword) && password.equals(confirmPassword)){
+                    if(ValidationUtil.validateUserCredentials(username, password) && password.equals(confirmPassword)){
                         User user = new User(repository.getAllExcursions().size() + 1, username, cryptoUtil.encrypt(password));
                         repository.insert(user);
                         Intent intent = new Intent(SignUpActivity.this, VacationActivity.class);
@@ -72,16 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
                         finish();
                     }
                     else {
-                        if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                            editSignUpError.setText("Please enter a username, password, and confirm the password.");
-                        } else if (!ValidationUtil.validateUsername(username)) {
-                            editSignUpError.setText("The username must contain 1 capital and be at least 6 characters long.");
-                        } else if (!password.equals(confirmPassword)) {
-                            editSignUpError.setText("The passwords entered do not match.");
-                        } else {
-                            editSignUpError.setText("The password must be 8 characters long, contain at least 1 capital, 1 number," +
-                                    " and have no spaces.");
-                        }
+                        editSignUpError.setText(ValidationUtil.displayIssueWithUserCredentials(username, password, confirmPassword));
                     }
                 } catch (Exception e){
                     throw new RuntimeException(e);
