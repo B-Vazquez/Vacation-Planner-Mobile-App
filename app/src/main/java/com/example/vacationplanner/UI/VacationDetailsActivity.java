@@ -28,6 +28,7 @@ import com.example.vacationplanner.database.Repository;
 import com.example.vacationplanner.entities.Excursion;
 import com.example.vacationplanner.entities.Transportation;
 import com.example.vacationplanner.entities.Vacation;
+import com.example.vacationplanner.utilities.VacationDeleteUtil;
 import com.example.vacationplanner.utilities.VacationSaveUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -140,14 +141,7 @@ public class VacationDetailsActivity extends AppCompatActivity {
             Transportation transport = (Transportation) editTransport.getSelectedItem();
             if(vacationID != -1){
                 vacation = new Vacation(vacationID, title, hotel, start, end, transport);
-                List<Excursion> excursions = repository.getAssociatedExcursions(vacationID);
-                if(!excursions.isEmpty()){
-                    Toast.makeText(VacationDetailsActivity.this, "Unable to delete a vacation with excursions", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                else{
-                    repository.delete(vacation);
-                }
+                VacationDeleteUtil.deleteVacation(VacationDetailsActivity.this, vacation, repository);
             }
             finish();
         });
