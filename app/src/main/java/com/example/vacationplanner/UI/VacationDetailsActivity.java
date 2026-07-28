@@ -237,45 +237,44 @@ public class VacationDetailsActivity extends AppCompatActivity {
             return true;
         }
         if(item.getItemId() == R.id.startnotify){
-            if(!start.isEmpty() && !title.isEmpty() && !end.isEmpty()){
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                Date startDate;
-                try{
-                    startDate = sdf.parse(start);
-                    long triggerStart = Objects.requireNonNull(startDate).getTime();
-                    Intent startIntent = new Intent(VacationDetailsActivity.this, MyReceiver.class);
-                    startIntent.putExtra("message", "The start of your " + title + " vacation is today.");
-                    PendingIntent startSender = PendingIntent.getBroadcast(VacationDetailsActivity.this, ++MainActivity.numAlert, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStart, startSender);
-                } catch (ParseException e){
-                    e.printStackTrace();
-                }
-            }
-            else {
+            if(start.isEmpty() || title.isEmpty() || hotel.isEmpty() || end.isEmpty()){
                 Toast.makeText(VacationDetailsActivity.this, "All fields must be filled to set an alert.", Toast.LENGTH_LONG).show();
+                return true;
             }
+            String myFormat = "MM/dd/yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            Date startDate;
+            try{
+                startDate = sdf.parse(start);
+                long triggerStart = Objects.requireNonNull(startDate).getTime();
+                Intent startIntent = new Intent(VacationDetailsActivity.this, MyReceiver.class);
+                startIntent.putExtra("message", "The start of your " + title + " vacation is today.");
+                PendingIntent startSender = PendingIntent.getBroadcast(VacationDetailsActivity.this, ++MainActivity.numAlert, startIntent, PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStart, startSender);
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
+
         }
         if(item.getItemId() == R.id.endnotify){
-            if(!start.isEmpty() && !title.isEmpty() && !end.isEmpty()){
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                Date endDate;
-                try{
-                    endDate = sdf.parse(end);
-                    long triggerEnd = Objects.requireNonNull(endDate).getTime();
-                    Intent endIntent = new Intent(VacationDetailsActivity.this, MyReceiver.class);
-                    endIntent.putExtra("message", "The end of your " + title + " vacation is today.");
-                    PendingIntent endSender = PendingIntent.getBroadcast(VacationDetailsActivity.this, ++MainActivity.numAlert, endIntent, PendingIntent.FLAG_IMMUTABLE);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerEnd, endSender);
-                } catch (ParseException e){
-                    e.printStackTrace();
-                }
-            }
-            else {
+            if(start.isEmpty() || title.isEmpty() || hotel.isEmpty() || end.isEmpty()){
                 Toast.makeText(VacationDetailsActivity.this, "All fields must be filled to set an alert.", Toast.LENGTH_LONG).show();
+                return true;
+            }
+            String myFormat = "MM/dd/yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            Date endDate;
+            try{
+                endDate = sdf.parse(end);
+                long triggerEnd = Objects.requireNonNull(endDate).getTime();
+                Intent endIntent = new Intent(VacationDetailsActivity.this, MyReceiver.class);
+                endIntent.putExtra("message", "The end of your " + title + " vacation is today.");
+                PendingIntent endSender = PendingIntent.getBroadcast(VacationDetailsActivity.this, ++MainActivity.numAlert, endIntent, PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerEnd, endSender);
+            } catch (ParseException e){
+                e.printStackTrace();
             }
         }
         return true;

@@ -133,36 +133,35 @@ public class ExcursionActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.excursionNotify){
             String title = editTitle.getText().toString();
             String date = editDate.getText().toString();
-            if(!title.isEmpty() || !date.isEmpty()){
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                Date myDate;
-                try {
-                    myDate = sdf.parse(date);
-                    DateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-                    List<Vacation> vacations = repository.getAllVacations();
-                    String start = "", end = "";
-                    for (Vacation v : vacations){
-                        if (v.getVacationID() == vacationID) { start = v.getStart_date(); end = v.getEnd_date(); }
-                    }
-                    Date vacationStart = dateFormat.parse(start);
-                    Date vacationEnd = dateFormat.parse(end);
-                    if(Objects.requireNonNull(myDate).before(vacationStart) || myDate.after(vacationEnd)){
-                        Toast.makeText(ExcursionActivity.this, "Excursion date must be between the start and end date of it's vacation.", Toast.LENGTH_LONG).show();
-                        return true;
-                    }
-                    long trigger = myDate.getTime();
-                    Intent intent = new Intent(ExcursionActivity.this, MyReceiver.class);
-                    intent.putExtra("message", "The start of your " + title + " excursion is today.");
-                    PendingIntent sender = PendingIntent.getBroadcast(ExcursionActivity.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
-                } catch (ParseException e){
-                    e.printStackTrace();
-                }
-            }
-            else{
+            if(title.isEmpty() || date.isEmpty()){
                 Toast.makeText(ExcursionActivity.this, "All fields must be filled to set an alert.", Toast.LENGTH_LONG).show();
+                return true;
+            }
+            String myFormat = "MM/dd/yy";
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+            Date myDate;
+            try {
+                myDate = sdf.parse(date);
+                DateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                List<Vacation> vacations = repository.getAllVacations();
+                String start = "", end = "";
+                for (Vacation v : vacations){
+                    if (v.getVacationID() == vacationID) { start = v.getStart_date(); end = v.getEnd_date(); }
+                }
+                Date vacationStart = dateFormat.parse(start);
+                Date vacationEnd = dateFormat.parse(end);
+                if(Objects.requireNonNull(myDate).before(vacationStart) || myDate.after(vacationEnd)){
+                    Toast.makeText(ExcursionActivity.this, "Excursion date must be between the start and end date of it's vacation.", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                long trigger = myDate.getTime();
+                Intent intent = new Intent(ExcursionActivity.this, MyReceiver.class);
+                intent.putExtra("message", "The start of your " + title + " excursion is today.");
+                PendingIntent sender = PendingIntent.getBroadcast(ExcursionActivity.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
         return true;
