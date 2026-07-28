@@ -7,10 +7,15 @@ import com.example.vacationplanner.database.Repository;
 import com.example.vacationplanner.entities.Vacation;
 
 public class VacationDeleteUtil {
-    public static void deleteVacation(Context context, Vacation vacation, Repository repository){
-        if(repository.getAssociatedExcursions(vacation.getVacationID()).isEmpty()){
+    public static boolean deleteVacation(Context context, Vacation vacation, Repository repository){
+        if (vacation.getVacationID() == -1){
+            return true;
+        }
+        if(!repository.getAssociatedExcursions(vacation.getVacationID()).isEmpty()){
             Toast.makeText(context, "Unable to delete a vacation with excursions", Toast.LENGTH_LONG).show();
+            return false;
         }
         repository.delete(vacation);
+        return true;
     }
 }

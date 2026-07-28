@@ -140,11 +140,11 @@ public class VacationDetailsActivity extends AppCompatActivity {
             String start = editStart.getText().toString();
             String end = editEnd.getText().toString();
             Transportation transport = (Transportation) editTransport.getSelectedItem();
-            if(vacationID != -1){
-                vacation = new Vacation(vacationID, title, hotel, start, end, transport);
-                VacationDeleteUtil.deleteVacation(VacationDetailsActivity.this, vacation, repository);
+            vacation = new Vacation(vacationID, title, hotel, start, end, transport);
+            if(VacationDeleteUtil.deleteVacation(VacationDetailsActivity.this, vacation, repository)){
+               finish();
             }
-            finish();
+
         });
 
         Button startDateButton = findViewById(R.id.startdatebutton);
