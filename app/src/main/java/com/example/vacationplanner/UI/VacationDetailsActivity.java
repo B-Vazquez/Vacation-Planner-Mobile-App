@@ -30,6 +30,7 @@ import com.example.vacationplanner.entities.Transportation;
 import com.example.vacationplanner.entities.Vacation;
 import com.example.vacationplanner.utilities.VacationDeleteUtil;
 import com.example.vacationplanner.utilities.VacationSaveUtil;
+import com.example.vacationplanner.utilities.VacationShareUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -220,31 +221,19 @@ public class VacationDetailsActivity extends AppCompatActivity {
             return true;
         }
         if(item.getItemId() == R.id.share){
-            StringBuilder shareText = new StringBuilder();
-            if(!title.isEmpty() && !hotel.isEmpty() && !start.isEmpty() && !end.isEmpty()){
-                shareText.append("Title: ").append(title);
-                shareText.append("\nHotel: ").append(hotel);
-                shareText.append("\nStart Date: ").append(start);
-                shareText.append("\nEnd Date: ").append(end);
-                List<Excursion> excursions = repository.getAssociatedExcursions(vacationID);
-                if(excursions != null && !excursions.isEmpty()){
-                    shareText.append("\n\nExcursions:");
-                    for(Excursion excursion : excursions){
-                        shareText.append("\nTitle: ").append(excursion.getExcursionName());
-                        shareText.append("\nDate: ").append(excursion.getDate());
-                    }
-                }
-                Intent sentIntent = new Intent();
-                sentIntent.setAction(Intent.ACTION_SEND);
-                sentIntent.putExtra(Intent.EXTRA_TEXT, shareText.toString());
-                sentIntent.putExtra(Intent.EXTRA_TITLE, title);
-                sentIntent.setType("text/plain");
-                Intent shareIntent = Intent.createChooser(sentIntent, null);
-                startActivity(shareIntent);
+            StringBuilder shareText = VacationShareUtil.shareVacationDetails(VacationDetailsActivity.this,
+                    title, hotel, start, end, repository.getAllExcursions());
+            if (shareText == null){
+                return true;
             }
-            else{
-                Toast.makeText(VacationDetailsActivity.this, "All fields must be filled to share.", Toast.LENGTH_LONG).show();
-            }
+            Intent sentIntent = new Intent();
+            sentIntent.setAction(Intent.ACTION_SEND);
+            sentIntent.putExtra(Intent.EXTRA_TEXT, shareText.toString());
+            sentIntent.putExtra(Intent.EXTRA_TITLE, title);
+            sentIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sentIntent, null);
+            startActivity(shareIntent);
+
             return true;
         }
         if(item.getItemId() == R.id.startnotify){
