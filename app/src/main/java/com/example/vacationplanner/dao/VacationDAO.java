@@ -11,6 +11,8 @@ import com.example.vacationplanner.entities.Vacation;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+
 @Dao
 public interface VacationDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -24,4 +26,7 @@ public interface VacationDAO {
 
     @Query("SELECT * FROM VACATIONS ORDER BY vacationID ASC")
     List<Vacation> getAllVacations();
+
+    @Query("SELECT * FROM VACATIONS ORDER BY vacationID ASC")
+    LiveData<List<Vacation>> getAllVacationsLiveData();
 }

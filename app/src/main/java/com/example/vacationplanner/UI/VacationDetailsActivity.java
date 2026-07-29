@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.example.vacationplanner.entities.Vacation;
 import com.example.vacationplanner.utilities.VacationDeleteUtil;
 import com.example.vacationplanner.utilities.VacationSaveUtil;
 import com.example.vacationplanner.utilities.VacationShareUtil;
+import com.example.vacationplanner.viewmodel.ExcursionViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -54,7 +56,8 @@ public class VacationDetailsActivity extends AppCompatActivity {
     EditText editEnd;
     Spinner editTransport;
     ArrayAdapter<Transportation> transportAdapter;
-    Repository repository;
+    private Repository repository;
+    private ExcursionViewModel excursionViewModel;
     DatePickerDialog.OnDateSetListener startDate;
     DatePickerDialog.OnDateSetListener endDate;
     final Calendar startCalender = Calendar.getInstance();
@@ -195,14 +198,14 @@ public class VacationDetailsActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.excursionRecyclerView);
         repository = new Repository(getApplication());
+        excursionViewModel = new ViewModelProvider(this).get(ExcursionViewModel.class);
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Excursion> filteredExcursions = new ArrayList<>();
-        for(Excursion excursion : repository.getAllExcursions()){
-            if (excursion.getVacationID() == vacationID) filteredExcursions.add(excursion);
-        }
-        excursionAdapter.setExcursions(filteredExcursions);
+
+        excursionViewModel.getAssociatedExcursions(vacationID).observe(this, excursions -> {
+            excursionAdapter.setExcursions(excursions);
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -282,14 +285,5 @@ public class VacationDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        RecyclerView recyclerView = findViewById(R.id.excursionRecyclerView);
-        final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
-        recyclerView.setAdapter(excursionAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Excursion> filteredExcursions = new ArrayList<>();
-        for (Excursion excursion : repository.getAllExcursions()){
-            if(excursion.getVacationID() == vacationID) filteredExcursions.add(excursion);
-        }
-        excursionAdapter.setExcursions(filteredExcursions);
     }
 }

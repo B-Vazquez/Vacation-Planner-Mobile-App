@@ -9,16 +9,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vacationplanner.R;
 import com.example.vacationplanner.database.Repository;
+import com.example.vacationplanner.viewmodel.VacationViewModel;
 
 public class ReportActivity extends AppCompatActivity {
     private ReportAdapter reportAdapter;
     private RecyclerView reportRecyclerView;
-    private Repository repository;
+    private VacationViewModel vacationViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -40,11 +42,14 @@ public class ReportActivity extends AppCompatActivity {
         });
 
         reportRecyclerView = findViewById(R.id.reportRecyclerView);
-        repository = new Repository(getApplication());
+        vacationViewModel = new ViewModelProvider(this).get(VacationViewModel.class);
         reportAdapter = new ReportAdapter(this);
         reportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         reportRecyclerView.setAdapter(reportAdapter);
-        reportAdapter.setReportVacations(repository.getAllVacations());
+
+        vacationViewModel.getAllVacations().observe(this, vacations -> {
+            reportAdapter.setReportVacations(vacations);
+        });
     }
 
 

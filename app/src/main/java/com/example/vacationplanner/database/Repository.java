@@ -9,6 +9,8 @@ import com.example.vacationplanner.entities.Excursion;
 import com.example.vacationplanner.entities.User;
 import com.example.vacationplanner.entities.Vacation;
 
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -37,6 +39,10 @@ public class Repository {
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public LiveData<List<Vacation>> getAllVacationsLiveData() {
+        return mVacationDAO.getAllVacationsLiveData();
     }
 
     public void insert(Vacation vacation){
@@ -75,6 +81,10 @@ public class Repository {
         }
     }
 
+    public LiveData<List<Excursion>> getAllExcursionsLiveData() {
+        return mExcursionDAO.getAllExcursionsLiveData();
+    }
+
     public List<Excursion> getAssociatedExcursions(int vacationID){
         Future<List<Excursion>> future = databaseExecutor.submit(() -> mExcursionDAO.getAssociatedExcursions(vacationID));
         try {
@@ -82,6 +92,10 @@ public class Repository {
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public LiveData<List<Excursion>> getAssociatedExcursionsLiveData(int vacationID) {
+        return mExcursionDAO.getAssociatedExcursionsLiveData(vacationID);
     }
 
     public void insert(Excursion excursion){

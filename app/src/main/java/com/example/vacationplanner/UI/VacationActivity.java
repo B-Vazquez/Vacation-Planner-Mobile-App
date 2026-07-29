@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,13 +23,14 @@ import com.example.vacationplanner.R;
 import com.example.vacationplanner.database.Repository;
 import com.example.vacationplanner.entities.Vacation;
 import com.example.vacationplanner.utilities.SearchUtil;
+import com.example.vacationplanner.viewmodel.VacationViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VacationActivity extends AppCompatActivity {
-    private Repository repository;
+    private VacationViewModel vacationViewModel;
     private VacationAdapter vacationAdapter;
     private List<Vacation> allVacations;
     private RecyclerView recyclerView;
@@ -64,12 +66,16 @@ public class VacationActivity extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.recyclerview);
-        repository = new Repository(getApplication());
-        allVacations = repository.getAllVacations();
+        vacationViewModel = new ViewModelProvider(this).get(VacationViewModel.class);
         vacationAdapter = new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        vacationAdapter.setVacations(allVacations);
+
+        vacationViewModel.getAllVacations().observe(this, vacations -> {
+            allVacations = vacations;
+            vacationAdapter.setVacations(allVacations);
+        });
+
         noMatchesToast = Toast.makeText(VacationActivity.this, "No matches found.", Toast.LENGTH_SHORT);
 
 
@@ -122,11 +128,5 @@ public class VacationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        allVacations = repository.getAllVacations();
-        recyclerView = findViewById(R.id.recyclerview);
-        vacationAdapter = new VacationAdapter(this);
-        recyclerView.setAdapter(vacationAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        vacationAdapter.setVacations(allVacations);
     }
 }

@@ -11,6 +11,8 @@ import com.example.vacationplanner.entities.Excursion;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+
 @Dao
 public interface ExcursionDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -25,6 +27,12 @@ public interface ExcursionDAO {
     @Query("Select * from EXCURSIONS ORDER BY excursionID ASC")
     List<Excursion> getAllExcursions();
 
+    @Query("Select * from EXCURSIONS ORDER BY excursionID ASC")
+    LiveData<List<Excursion>> getAllExcursionsLiveData();
+
     @Query("Select * from EXCURSIONS WHERE vacationID=:vacation ORDER BY excursionID ASC ")
     List<Excursion> getAssociatedExcursions(int vacation);
+
+    @Query("Select * from EXCURSIONS WHERE vacationID=:vacation ORDER BY excursionID ASC ")
+    LiveData<List<Excursion>> getAssociatedExcursionsLiveData(int vacation);
 }
