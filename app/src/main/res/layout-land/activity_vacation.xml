@@ -23,18 +23,19 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="1dp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/reportButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchChoice" />
 
@@ -43,35 +44,33 @@
         android:layout_width="wrap_content"
         android:layout_height="38dp"
         android:gravity="center_vertical"
+        android:paddingStart="@dimen/default_padding"
         android:text="Search By:"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/searchChoice"
-        app:layout_constraintEnd_toStartOf="@+id/searchChoice"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchChoice"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/searchChoice" />
 
     <Spinner
         android:id="@+id/searchChoice"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="230dp"
+        android:layout_marginTop="@dimen/header_margin_top"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></Spinner>
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.4"></Spinner>
 
     <Button
         android:id="@+id/reportButton"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
         android:text="Generate Report"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/floatingActionButton"
-        app:layout_constraintHorizontal_bias="0.563"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerview"
-        app:layout_constraintVertical_bias="0.97" />
+        app:layout_constraintWidth_percent="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

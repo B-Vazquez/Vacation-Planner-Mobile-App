@@ -7,117 +7,124 @@
     android:layout_height="match_parent"
     tools:context=".UI.SignUpActivity">
 
-    <EditText
-        android:id="@+id/signUpPasswordText"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:hint="Enter Password"
-        app:layout_constraintBottom_toBottomOf="@+id/signUpPasswordView"
-        app:layout_constraintEnd_toEndOf="@+id/signUpUsernameText"
-        app:layout_constraintStart_toStartOf="@+id/signUpUsernameText"
-        app:layout_constraintTop_toTopOf="@+id/signUpPasswordView"
-        android:inputType="textPassword"></EditText>
-
-    <TextView
-        android:id="@+id/signUpPasswordView"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="80dp"
-        android:gravity="center_vertical"
-        android:text="Password:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/confirmPasswordView"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpUsernameView"
-        app:layout_constraintVertical_bias="0.104" />
-
-    <TextView
-        android:id="@+id/confirmPasswordView"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="52dp"
-        android:gravity="center_vertical"
-        android:text="Confirm Password:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordView"
-        app:layout_constraintVertical_bias="0.0"/>
-
-    <EditText
-        android:id="@+id/confirmPasswordText"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginBottom="168dp"
-        android:hint="Enter Password"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/signUpUsernameText"
-        app:layout_constraintStart_toStartOf="@+id/signUpUsernameText"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordText"
-        app:layout_constraintVertical_bias="0.0"
-        android:inputType="textPassword"></EditText>
-
-    <EditText
-        android:id="@+id/signUpUsernameText"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginTop="208dp"
-        android:hint="Enter Username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/signUpUsernameView"
-        app:layout_constraintTop_toTopOf="parent"></EditText>
-
-    <TextView
-        android:id="@+id/signUpUsernameView"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="208dp"
-        android:gravity="center_vertical"
-        android:text="Username:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign Up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordText"
-        app:layout_constraintVertical_bias="0.455" />
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Account"
-        android:textSize="20sp"
+        android:textSize="@dimen/sub_header_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/signUpUsernameView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.767" />
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/signUpUsernameView"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:gravity="center_vertical"
+        android:text="Username:"
+        android:textSize="@dimen/body_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/signUpPasswordView"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <EditText
+        android:id="@+id/signUpUsernameText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:hint="Enter Username"
+        app:layout_constraintBottom_toBottomOf="@+id/signUpUsernameView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/signUpUsernameView"
+        app:layout_constraintTop_toTopOf="@+id/signUpUsernameView" />
+
+    <TextView
+        android:id="@+id/signUpPasswordView"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginTop="@dimen/between_items_margin"
+        android:gravity="center_vertical"
+        android:text="Password:"
+        android:textSize="@dimen/body_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/confirmPasswordView"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/signUpUsernameView" />
+
+    <EditText
+        android:id="@+id/signUpPasswordText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/signUpPasswordView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/signUpPasswordView"
+        app:layout_constraintTop_toTopOf="@+id/signUpPasswordView" />
+
+    <TextView
+        android:id="@+id/confirmPasswordView"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:gravity="center_vertical"
+        android:text="Confirm Password:"
+        android:textSize="@dimen/body_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/signUpError"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordView" />
+
+    <EditText
+        android:id="@+id/confirmPasswordText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/confirmPasswordView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/confirmPasswordView"
+        app:layout_constraintTop_toTopOf="@+id/confirmPasswordView" />
 
     <TextView
         android:id="@+id/signUpError"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:textColor="#620202"
-        android:textSize="16sp"
+        android:textSize="@dimen/body_text_size"
         app:layout_constraintBottom_toTopOf="@+id/signUpButton"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordView" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:text="Sign Up"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordView" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpError"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

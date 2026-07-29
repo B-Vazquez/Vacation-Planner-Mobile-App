@@ -10,27 +10,23 @@
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="98dp"
-        android:layout_height="62dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/header_margin_top"
         android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintWidth_percent="0.3" />
 
     <ScrollView
         android:id="@+id/scrollView1"
-        android:layout_width="fill_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentLeft="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
 
         <HorizontalScrollView
             android:id="@+id/hscrll1"
@@ -53,7 +49,7 @@
                         android:padding="10dp"
                         android:text="Title"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -63,7 +59,7 @@
                         android:padding="10dp"
                         android:text="Hotel"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -73,7 +69,7 @@
                         android:padding="10dp"
                         android:text="Start Date"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -83,7 +79,7 @@
                         android:padding="10dp"
                         android:text="End Date"
                         android:textColor="#000000"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </TableRow>
 

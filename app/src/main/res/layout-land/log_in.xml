@@ -7,93 +7,101 @@
     android:layout_height="match_parent"
     tools:context=".UI.LogInActivity">
 
-    <EditText
-        android:id="@+id/logInUsernameText"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:hint="Enter Username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.008"
-        app:layout_constraintStart_toEndOf="@+id/logInUsernameView"
-        app:layout_constraintTop_toTopOf="@+id/logInUsernameView"></EditText>
-
-    <TextView
-        android:id="@+id/logInUsernameView"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="284dp"
-        android:layout_marginTop="136dp"
-        android:gravity="center_vertical"
-        android:text="Username:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/logInPasswordText"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:hint="Enter Password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@+id/logInPasswordView"
-        app:layout_constraintEnd_toEndOf="@id/logInUsernameText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/logInUsernameText"
-        app:layout_constraintTop_toTopOf="@+id/logInPasswordView"
-        app:layout_constraintVertical_bias="0.0"></EditText>
-
-    <TextView
-        android:id="@+id/logInPasswordView"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginStart="272dp"
-        android:gravity="center_vertical"
-        android:text="Password:"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/logInUsernameText"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInUsernameView"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/logInButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log In"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInError"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/logInError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:textColor="#620202"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInPasswordText" />
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/header_margin_top"
         android:text="Log In"
-        android:textSize="20sp"
+        android:textSize="@dimen/sub_header_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/logInUsernameView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.697" />
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/logInUsernameView"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:gravity="center_vertical"
+        android:text="Username:"
+        android:textSize="@dimen/body_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/logInPasswordView"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <EditText
+        android:id="@+id/logInUsernameText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:hint="Enter Username"
+        app:layout_constraintBottom_toBottomOf="@+id/logInUsernameView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/logInUsernameView"
+        app:layout_constraintTop_toTopOf="@+id/logInUsernameView" />
+
+    <TextView
+        android:id="@+id/logInPasswordView"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginTop="@dimen/between_items_margin"
+        android:gravity="center_vertical"
+        android:text="Password:"
+        android:textSize="@dimen/body_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/logInError"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/logInUsernameView" />
+
+    <EditText
+        android:id="@+id/logInPasswordText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/edit_text_height"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/logInPasswordView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/logInPasswordView"
+        app:layout_constraintTop_toTopOf="@+id/logInPasswordView" />
+
+    <TextView
+        android:id="@+id/logInError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="#620202"
+        android:textSize="@dimen/body_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/logInButton"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/logInPasswordView" />
+
+    <Button
+        android:id="@+id/logInButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:text="Log In"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logInError"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

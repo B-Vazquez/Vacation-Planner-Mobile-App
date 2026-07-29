@@ -9,21 +9,19 @@
 
     <ScrollView
         android:id="@+id/scrollView3"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/header_margin_top"
         android:background="#2196f3"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/small_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,71 +30,70 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_width="100dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="Title"></TextView>
+                    android:text="Title" />
 
                 <EditText
                     android:id="@+id/excursiontitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Enter Title"></EditText>
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_weight="0.5"
+                    android:hint="Enter Title" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_horizontal">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_width="100dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="Date"></TextView>
+                    android:text="Date" />
 
                 <EditText
                     android:id="@+id/excursiondate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:hint="Enter Date"></EditText>
-
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_weight="0.5"
+                    android:hint="Enter Date" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/excursionDeleteButton"
-        android:layout_width="98dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="138dp"
-        android:layout_marginTop="76dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
         android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
+        app:layout_constraintStart_toEndOf="@+id/excursionSaveButton"
+        app:layout_constraintTop_toBottomOf="@+id/excursiondatebutton" />
 
     <Button
         android:id="@+id/excursionSaveButton"
-        android:layout_width="98dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="46dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
         android:text="Save"
-        app:layout_constraintBottom_toBottomOf="@+id/excursionDeleteButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/excursionDeleteButton"
-        app:layout_constraintHorizontal_bias="0.931"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/excursiondatebutton" />
 
     <Button
         android:id="@+id/excursiondatebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
         android:text="Select Date"
-        app:layout_constraintBottom_toTopOf="@+id/excursionSaveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3"></Button>
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
+        app:layout_constraintWidth_percent="0.4"></Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
