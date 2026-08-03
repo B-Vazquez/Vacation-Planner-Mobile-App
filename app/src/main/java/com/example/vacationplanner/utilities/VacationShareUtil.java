@@ -8,7 +8,20 @@ import com.example.vacationplanner.entities.Excursion;
 
 import java.util.List;
 
+/**
+ * Utility class for formatting vacation details for sharing.
+ */
 public class VacationShareUtil {
+    /**
+     * Formats vacation and its excursions into a shareable string.
+     * @param context The application context for showing toasts.
+     * @param title Vacation title.
+     * @param hotel Hotel name.
+     * @param start Start date string.
+     * @param end End date string.
+     * @param excursionList List of associated excursions.
+     * @return A StringBuilder containing formatted trip details, or null if validation fails.
+     */
     public static StringBuilder shareVacationDetails(Context context, String title, String hotel, String start, String end, List<Excursion> excursionList){
         if(title.isEmpty() || hotel.isEmpty() || start.isEmpty() || end.isEmpty()){
             Toast.makeText(context, "All fields must be filled to share.", Toast.LENGTH_LONG).show();

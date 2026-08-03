@@ -57,18 +57,19 @@ public class LogInActivity extends AppCompatActivity {
                     username = editUsername.getText().toString();
                     password = editPassword.getText().toString();
 
-                    if(ValidationUtil.validateUserCredentials(username, password)){
+                    ValidationUtil.ValidationResult result = ValidationUtil.validateLogin(username, password);
+                    if (result.isValid) {
                         User user = repository.getAllUsers().get(0);
-                        if(user.getUsername().equals(username) && cryptoUtil.compare(user.getPassword(), password)){
+                        if (user.getUsername().equals(username) && cryptoUtil.compare(user.getPassword(), password)) {
                             Intent intent = new Intent(LogInActivity.this, VacationActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
                         } else {
-                            editLogInError.setText("The entered username/password does not match stored username/password.");
+                            editLogInError.setText("The entered username/password does not match stored credentials.");
                         }
-                    } else{
-                        editLogInError.setText(ValidationUtil.displayIssueWithUserCredentials(username, password));
+                    } else {
+                        editLogInError.setText(result.errorMessage);
                     }
                 } catch (Exception e){
                     throw new RuntimeException(e);

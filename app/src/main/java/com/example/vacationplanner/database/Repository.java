@@ -12,19 +12,29 @@ import com.example.vacationplanner.entities.Vacation;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.ArrayList;
+import android.util.Log;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * Repository class that abstracts access to multiple data sources.
+ * It provides a clean API for data access to the rest of the application.
+ */
 public class Repository {
-    private ExcursionDAO mExcursionDAO;
-    private VacationDAO mVacationDAO;
-    private UserDAO mUserDAO;
+    private final ExcursionDAO mExcursionDAO;
+    private final VacationDAO mVacationDAO;
+    private final UserDAO mUserDAO;
 
-    private static int NUMBER_OF_THREADS=4;
-    static final ExecutorService databaseExecutor= Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private static final int NUMBER_OF_THREADS = 4;
+    static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
+    /**
+     * Constructor for the Repository.
+     * @param application The application context used to initialize the database.
+     */
     public Repository(Application application){
         VacationDatabase db = VacationDatabase.getDatabase(application);
         mExcursionDAO = db.excursionDAO();
@@ -32,132 +42,162 @@ public class Repository {
         mUserDAO = db.userDAO();
     }
 
+    /**
+     * Retrieves all vacations from the database.
+     * Note: This blocks the current thread. Use {@link #getAllVacationsLiveData()} for non-blocking UI updates.
+     * @return A list of all vacations.
+     */
     public List<Vacation> getAllVacations(){
-        Future<List<Vacation>> future = databaseExecutor.submit(() -> mVacationDAO.getAllVacations());
+        Future<List<Vacation>> future = databaseExecutor.submit(mVacationDAO::getAllVacations);
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+            Log.e("Repository", "Error fetching all vacations", e);
+            return new ArrayList<>();
         }
     }
 
+    /**
+     * Returns an observable LiveData list of all vacations.
+     * @return LiveData containing the list of vacations.
+     */
     public LiveData<List<Vacation>> getAllVacationsLiveData() {
         return mVacationDAO.getAllVacationsLiveData();
     }
 
+    /**
+     * Inserts a vacation into the database asynchronously.
+     * @param vacation The vacation to insert.
+     */
     public void insert(Vacation vacation){
-        Future<?> future = databaseExecutor.submit(() -> mVacationDAO.insert(vacation));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mVacationDAO.insert(vacation));
     }
 
+    /**
+     * Updates an existing vacation in the database asynchronously.
+     * @param vacation The vacation to update.
+     */
     public void update(Vacation vacation){
-        Future<?> future = databaseExecutor.submit(() -> mVacationDAO.update(vacation));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mVacationDAO.update(vacation));
     }
 
+    /**
+     * Deletes a vacation from the database asynchronously.
+     * @param vacation The vacation to delete.
+     */
     public void delete(Vacation vacation){
-        Future<?> future = databaseExecutor.submit(() -> mVacationDAO.delete(vacation));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mVacationDAO.delete(vacation));
     }
 
+    /**
+     * Retrieves all excursions from the database.
+     * Note: This blocks the current thread.
+     * @return A list of all excursions.
+     */
     public List<Excursion> getAllExcursions(){
-        Future<List<Excursion>> future = databaseExecutor.submit(() -> mExcursionDAO.getAllExcursions());
+        Future<List<Excursion>> future = databaseExecutor.submit(mExcursionDAO::getAllExcursions);
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+            Log.e("Repository", "Error fetching all excursions", e);
+            return new ArrayList<>();
         }
     }
 
+    /**
+     * Returns an observable LiveData list of all excursions.
+     * @return LiveData containing the list of excursions.
+     */
     public LiveData<List<Excursion>> getAllExcursionsLiveData() {
         return mExcursionDAO.getAllExcursionsLiveData();
     }
 
+    /**
+     * Retrieves excursions associated with a specific vacation.
+     * Note: This blocks the current thread.
+     * @param vacationID The ID of the vacation.
+     * @return A list of associated excursions.
+     */
     public List<Excursion> getAssociatedExcursions(int vacationID){
         Future<List<Excursion>> future = databaseExecutor.submit(() -> mExcursionDAO.getAssociatedExcursions(vacationID));
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+            Log.e("Repository", "Error fetching associated excursions", e);
+            return new ArrayList<>();
         }
     }
 
+    /**
+     * Returns an observable LiveData list of excursions associated with a specific vacation.
+     * @param vacationID The ID of the vacation.
+     * @return LiveData containing the list of associated excursions.
+     */
     public LiveData<List<Excursion>> getAssociatedExcursionsLiveData(int vacationID) {
         return mExcursionDAO.getAssociatedExcursionsLiveData(vacationID);
     }
 
+    /**
+     * Inserts an excursion into the database asynchronously.
+     * @param excursion The excursion to insert.
+     */
     public void insert(Excursion excursion){
-        Future<?> future = databaseExecutor.submit(() -> mExcursionDAO.insert(excursion));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mExcursionDAO.insert(excursion));
     }
 
+    /**
+     * Updates an existing excursion in the database asynchronously.
+     * @param excursion The excursion to update.
+     */
     public void update(Excursion excursion){
-        Future<?> future = databaseExecutor.submit(() -> mExcursionDAO.update(excursion));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mExcursionDAO.update(excursion));
     }
 
+    /**
+     * Deletes an excursion from the database asynchronously.
+     * @param excursion The excursion to delete.
+     */
     public void delete(Excursion excursion){
-        Future<?> future = databaseExecutor.submit(() -> mExcursionDAO.delete(excursion));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mExcursionDAO.delete(excursion));
     }
 
+    /**
+     * Inserts a user into the database asynchronously.
+     * @param user The user to insert.
+     */
     public void insert(User user){
-        Future<?> future = databaseExecutor.submit(() -> mUserDAO.insert(user));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mUserDAO.insert(user));
     }
 
+    /**
+     * Updates an existing user in the database asynchronously.
+     * @param user The user to update.
+     */
     public void update(User user){
-        Future<?> future = databaseExecutor.submit(() -> mUserDAO.update(user));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mUserDAO.update(user));
     }
 
+    /**
+     * Deletes a user from the database asynchronously.
+     * @param user The user to delete.
+     */
     public void delete(User user){
-        Future<?> future = databaseExecutor.submit(() -> mUserDAO.delete(user));
-        try {
-            future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        databaseExecutor.execute(() -> mUserDAO.delete(user));
     }
 
+    /**
+     * Retrieves all users from the database.
+     * Note: This blocks the current thread.
+     * @return A list of all users.
+     */
     public List<User> getAllUsers() {
-        Future<List<User>> future = databaseExecutor.submit(() -> mUserDAO.getAllUsers());
+        Future<List<User>> future = databaseExecutor.submit(mUserDAO::getAllUsers);
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+            Log.e("Repository", "Error fetching all users", e);
+            return new ArrayList<>();
         }
     }
 }
+

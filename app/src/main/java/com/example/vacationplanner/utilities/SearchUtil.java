@@ -5,8 +5,18 @@ import com.example.vacationplanner.entities.Vacation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for searching through lists of vacations based on different criteria.
+ */
 public class SearchUtil {
 
+    /**
+     * Searches a list of vacations based on the specified criteria.
+     * @param searchChoice The search criterion ("Title", "Hotel", or "Transportation").
+     * @param textToSearchFor The text query to search for.
+     * @param allVacations The list of all vacations to search within.
+     * @return A list of vacations that match the search criteria.
+     */
     public static List<Vacation> searchVacations(String searchChoice, String textToSearchFor, List<Vacation> allVacations){
         List<Vacation> searchedVacationList = new ArrayList<>();
         switch(searchChoice){

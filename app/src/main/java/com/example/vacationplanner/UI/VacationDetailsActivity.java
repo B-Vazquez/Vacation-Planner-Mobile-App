@@ -1,12 +1,11 @@
 package com.example.vacationplanner.UI;
 
-import android.app.AlarmManager;
+
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -26,9 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.vacationplanner.R;
 import com.example.vacationplanner.database.Repository;
-import com.example.vacationplanner.entities.Excursion;
 import com.example.vacationplanner.entities.Transportation;
 import com.example.vacationplanner.entities.Vacation;
+import com.example.vacationplanner.utilities.AlarmUtil;
 import com.example.vacationplanner.utilities.VacationDeleteUtil;
 import com.example.vacationplanner.utilities.VacationSaveUtil;
 import com.example.vacationplanner.utilities.VacationShareUtil;
@@ -37,10 +36,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -117,20 +114,17 @@ public class VacationDetailsActivity extends AppCompatActivity {
 
         Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(view -> {
-            Vacation vacation;
             String title = editTitle.getText().toString();
             String hotel = editHotel.getText().toString();
             String start = editStart.getText().toString();
             String end = editEnd.getText().toString();
             Transportation transport = (Transportation) editTransport.getSelectedItem();
-            try {
-                if (VacationSaveUtil.validateVacationToSave(VacationDetailsActivity.this, title, hotel, start, end)) {
-                    vacation = new Vacation(vacationID, title, hotel, start, end, transport);
-                    VacationSaveUtil.saveVacationToRepository(vacation, repository);
-                    finish();
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
+
+            // Validate inputs and dates via Utility class
+            if (VacationSaveUtil.validateVacationToSave(VacationDetailsActivity.this, title, hotel, start, end)) {
+                Vacation vacation = new Vacation(vacationID, title, hotel, start, end, transport);
+                VacationSaveUtil.saveVacationToRepository(vacation, repository);
+                finish();
             }
         });
 
@@ -150,22 +144,25 @@ public class VacationDetailsActivity extends AppCompatActivity {
 
         });
 
+        // Initialize date pickers for start and end dates
         Button startDateButton = findViewById(R.id.startdatebutton);
         startDateButton.setOnClickListener(view -> {
             String dateToLoad;
             String testDate = editStart.getText().toString();
+            // Default to current date if field is empty
             if (testDate.isEmpty()){
                 dateToLoad = sdf.format(new Date());
             } else dateToLoad = testDate;
             try{
                 startCalender.setTime(Objects.requireNonNull(sdf.parse(dateToLoad)));
             } catch (ParseException e){
-                e.printStackTrace();
+                Log.e("VacationDetails", "Error parsing date from start date picker.");
             }
             new DatePickerDialog(VacationDetailsActivity.this, startDate, startCalender.get(Calendar.YEAR),
                     startCalender.get(Calendar.MONTH), startCalender.get(Calendar.DAY_OF_MONTH)).show();
         });
 
+        // Set the chosen date from picker to the EditText
         startDate = (datePicker, year, month, day) -> {
             startCalender.set(Calendar.YEAR, year);
             startCalender.set(Calendar.MONTH, month);
@@ -183,7 +180,7 @@ public class VacationDetailsActivity extends AppCompatActivity {
             try{
                 endCalender.setTime(Objects.requireNonNull(sdf.parse(dateToLoad)));
             } catch (ParseException e){
-                e.printStackTrace();
+                Log.e("VacationDetails", "Error parsing date from end date picker.");
             }
             new DatePickerDialog(VacationDetailsActivity.this, endDate, endCalender.get(Calendar.YEAR),
                     endCalender.get(Calendar.MONTH), endCalender.get(Calendar.DAY_OF_MONTH)).show();
@@ -244,41 +241,17 @@ public class VacationDetailsActivity extends AppCompatActivity {
                 Toast.makeText(VacationDetailsActivity.this, "All fields must be filled to set an alert.", Toast.LENGTH_LONG).show();
                 return true;
             }
-            String myFormat = "MM/dd/yy";
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-            Date startDate;
-            try{
-                startDate = sdf.parse(start);
-                long triggerStart = Objects.requireNonNull(startDate).getTime();
-                Intent startIntent = new Intent(VacationDetailsActivity.this, MyReceiver.class);
-                startIntent.putExtra("message", "The start of your " + title + " vacation is today.");
-                PendingIntent startSender = PendingIntent.getBroadcast(VacationDetailsActivity.this, ++MainActivity.numAlert, startIntent, PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerStart, startSender);
-            } catch (ParseException e){
-                e.printStackTrace();
-            }
-
+            // Use static Utility for scheduling notifications
+            AlarmUtil.setAlarm(this, start, "The start of your " + title + " vacation is today.");
+            return true;
         }
         if(item.getItemId() == R.id.endnotify){
             if(start.isEmpty() || title.isEmpty() || hotel.isEmpty() || end.isEmpty()){
                 Toast.makeText(VacationDetailsActivity.this, "All fields must be filled to set an alert.", Toast.LENGTH_LONG).show();
                 return true;
             }
-            String myFormat = "MM/dd/yy";
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-            Date endDate;
-            try{
-                endDate = sdf.parse(end);
-                long triggerEnd = Objects.requireNonNull(endDate).getTime();
-                Intent endIntent = new Intent(VacationDetailsActivity.this, MyReceiver.class);
-                endIntent.putExtra("message", "The end of your " + title + " vacation is today.");
-                PendingIntent endSender = PendingIntent.getBroadcast(VacationDetailsActivity.this, ++MainActivity.numAlert, endIntent, PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerEnd, endSender);
-            } catch (ParseException e){
-                e.printStackTrace();
-            }
+            AlarmUtil.setAlarm(this, end, "The end of your " + title + " vacation is today.");
+            return true;
         }
         return true;
     }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,21 +61,25 @@ public class SignUpActivity extends AppCompatActivity {
                 password = editPassword.getText().toString();
                 confirmPassword = editConfirmPassword.getText().toString();
 
-                try{
+                try {
                     CryptoUtil cryptoUtil = new CryptoUtil(sharedPreferences);
-                    if(ValidationUtil.validateUserCredentials(username, password) && password.equals(confirmPassword)){
-                        User user = new User(repository.getAllExcursions().size() + 1, username, cryptoUtil.encrypt(password));
+                    ValidationUtil.ValidationResult result = ValidationUtil.validateSignUp(username, password, confirmPassword);
+                    
+                    if (result.isValid) {
+                        // Using auto-generated ID (set to 0)
+                        User user = new User(0, username, cryptoUtil.encrypt(password));
                         repository.insert(user);
+                        
                         Intent intent = new Intent(SignUpActivity.this, VacationActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
+                    } else {
+                        editSignUpError.setText(result.errorMessage);
                     }
-                    else {
-                        editSignUpError.setText(ValidationUtil.displayIssueWithUserCredentials(username, password, confirmPassword));
-                    }
-                } catch (Exception e){
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    editSignUpError.setText("An error occurred during registration.");
+                    Log.e("SignUp", "Error occurred during registration.");
                 }
 
             }

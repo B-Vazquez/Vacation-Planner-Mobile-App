@@ -14,10 +14,18 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 
+/**
+ * Utility class for handling encryption and decryption using Android KeyStore.
+ */
 public class CryptoUtil {
     private final SharedPreferences sharedPreferences;
     private final KeyStore keyStore;
 
+    /**
+     * Constructs a CryptoUtil instance and initializes the KeyStore.
+     * @param sharedPreferences SharedPreferences to store encrypted keys and IVs.
+     * @throws Exception If KeyStore initialization fails.
+     */
     public CryptoUtil(SharedPreferences sharedPreferences) throws Exception {
         this.sharedPreferences = sharedPreferences;
         this.keyStore = KeyStore.getInstance("AndroidKeyStore");
@@ -72,10 +80,23 @@ public class CryptoUtil {
         return entry.getSecretKey();
     }
 
+    /**
+     * Compares an encrypted text with a plain text string.
+     * @param encryptedText The encrypted text (Base64 encoded with IV).
+     * @param text The plain text to compare.
+     * @return true if the decrypted text matches the input text, false otherwise.
+     * @throws Exception If decryption fails.
+     */
     public boolean compare(String encryptedText, String text) throws Exception {
         return text.equals(decrypt(encryptedText));
     }
 
+    /**
+     * Encrypts a plain text string using AES/GCM.
+     * @param text The plain text to encrypt.
+     * @return A Base64 encoded string containing the cipher text and IV, separated by a dot.
+     * @throws Exception If encryption fails.
+     */
     public String encrypt(String text) throws Exception {
         SecretKey secretKey = getSecretKey("vacation_secret_key");
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
@@ -88,6 +109,12 @@ public class CryptoUtil {
         return cipherText + "." + iv;
     }
 
+    /**
+     * Decrypts an encrypted text string.
+     * @param cipherText The encrypted text (Base64 encoded cipher text and IV).
+     * @return The decrypted plain text string.
+     * @throws Exception If decryption fails.
+     */
     public String decrypt(String cipherText) throws Exception{
         SecretKey secretKey = getSecretKey("vacation_secret_key");
 
