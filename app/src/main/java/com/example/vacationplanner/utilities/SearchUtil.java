@@ -19,6 +19,7 @@ public class SearchUtil {
      */
     public static List<Vacation> searchVacations(String searchChoice, String textToSearchFor, List<Vacation> allVacations){
         List<Vacation> searchedVacationList = new ArrayList<>();
+        textToSearchFor = textToSearchFor.toLowerCase();
         switch(searchChoice){
             case("Title"):
                 searchedVacationList = searchByTitle(textToSearchFor, allVacations);

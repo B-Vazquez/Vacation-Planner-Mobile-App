@@ -98,7 +98,7 @@ public class VacationActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String textToSearchFor) {
                 List<Vacation> vacations;
-                textToSearchFor = textToSearchFor.toLowerCase();
+                textToSearchFor = textToSearchFor;
 
                 // Gets the selected option to search stored vacations by.
                 String searchOption = searchChoice.getSelectedItem().toString();
