@@ -6,29 +6,40 @@ import static org.junit.Assert.*;
 
 import com.example.vacationplanner.utilities.ValidationUtil;
 
-
+/**
+ * Unit tests for {@link ValidationUtil}
+ */
 public class ValidationUnitTest {
-    // Tests the username validation when the input username meets the username requirements
+    // Tests the log in validation when input credentials meet the requirements
     @Test
-    public void correctUsername_Validation() {
-        assertTrue(ValidationUtil.validateUserCredentials("Tester1", "Tester1!"));
+    public void valid_Credentials_Login_Validation() {
+        assertTrue(ValidationUtil.validateLogin("Tester1", "Tester1!").isValid);
     }
 
-    // Tests the username validation when the input username does not meet the username requirements
+    // Tests the sign-up validation when input credentials meet the requirements
     @Test
-    public void incorrectUsername_Validation(){
-        assertFalse(ValidationUtil.validateUserCredentials("test1", "Tester1!"));
+    public void valid_Credentials_Signup_Validation() {
+        assertTrue(ValidationUtil.validateSignUp("Tester1", "Tester1!", "Tester1!").isValid);
     }
 
-    // Tests the password validation when the input password meets the password requirements
+    // Tests the log in validation when input credentials do not meet the requirements
     @Test
-    public void correctPassword_Validation(){
-        assertTrue(ValidationUtil.validateUserCredentials("Tester1", "Tester1!"));
+    public void invalid_Credentials_Login_Validation() {
+        assertFalse("Invalid username should return false",
+                ValidationUtil.validateLogin("test1", "Tester1!").isValid);
+        assertFalse("Invalid password should return false",
+                ValidationUtil.validateLogin("Tester1", "test1!").isValid);
     }
 
-    // Tests the password validation when the input password does not meet the password requirements
+    // Tests the sign-up validation when input credentials do not meet the requirements
     @Test
-    public void incorrectPassword_Validation(){
-        assertFalse(ValidationUtil.validateUserCredentials("Tester1", "test1!"));
+    public void invalid_Credentials_Signup_Validation() {
+        assertFalse("Invalid username should return false",
+                ValidationUtil.validateSignUp("test1", "Tester1!", "Tester1!").isValid);
+        assertFalse("Invalid password should return false",
+                ValidationUtil.validateSignUp("Tester1", "test1!", "Tester1!").isValid);
+        assertFalse("Invalid password confirmation should return false",
+                ValidationUtil.validateSignUp("Tester1", "Tester1!", "test1!").isValid);
+
     }
 }

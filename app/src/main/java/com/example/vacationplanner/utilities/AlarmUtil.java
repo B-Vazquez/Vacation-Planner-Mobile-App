@@ -28,6 +28,7 @@ public class AlarmUtil {
      * @param message The message to be sent via the broadcast receiver.
      */
     public static void setAlarm(Context context, String dateString, String message) {
+        if (dateString == null || dateString.isEmpty()) return;
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         try {
             Date date = sdf.parse(dateString);

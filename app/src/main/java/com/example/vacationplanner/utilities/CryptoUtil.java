@@ -20,6 +20,7 @@ import javax.crypto.spec.GCMParameterSpec;
 public class CryptoUtil {
     private final SharedPreferences sharedPreferences;
     private final KeyStore keyStore;
+    private final String providerName;
 
     /**
      * Constructs a CryptoUtil instance and initializes the KeyStore.
@@ -27,9 +28,25 @@ public class CryptoUtil {
      * @throws Exception If KeyStore initialization fails.
      */
     public CryptoUtil(SharedPreferences sharedPreferences) throws Exception {
+        this(sharedPreferences, "AndroidKeyStore");
+    }
+
+    /**
+     * Internal constructor for testing purposes.
+     * @param sharedPreferences SharedPreferences to store encrypted keys and IVs.
+     * @param providerName The name of the KeyStore provider.
+     * @throws Exception If KeyStore initialization fails.
+     */
+    public CryptoUtil(SharedPreferences sharedPreferences, String providerName) throws Exception {
         this.sharedPreferences = sharedPreferences;
-        this.keyStore = KeyStore.getInstance("AndroidKeyStore");
-        this.keyStore.load(null);
+        this.providerName = providerName;
+        if (providerName.equals("AndroidKeyStore")) {
+            this.keyStore = KeyStore.getInstance(providerName);
+            this.keyStore.load(null);
+        } else {
+            this.keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            this.keyStore.load(null);
+        }
         initialize();
     }
 
@@ -42,15 +59,23 @@ public class CryptoUtil {
 
     private void generateKeystoreKeyIfNeeded() throws Exception{
         if(!keyStore.containsAlias("vacation_secret_key")){
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-            KeyGenParameterSpec keyGenSpec = new KeyGenParameterSpec.Builder(
-                    "vacation_secret_key",
-                    KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
-                    .build();
-            keyGenerator.init(keyGenSpec);
-            keyGenerator.generateKey();
+            KeyGenerator keyGenerator;
+            if (providerName.equals("AndroidKeyStore")) {
+                keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, providerName);
+                KeyGenParameterSpec keyGenSpec = new KeyGenParameterSpec.Builder(
+                        "vacation_secret_key",
+                        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                        .build();
+                keyGenerator.init(keyGenSpec);
+                keyGenerator.generateKey();
+            } else {
+                keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES);
+                keyGenerator.init(256);
+                SecretKey secretKey = keyGenerator.generateKey();
+                keyStore.setKeyEntry("vacation_secret_key", secretKey, "test".toCharArray(), null);
+            }
         }
     }
 
@@ -76,7 +101,8 @@ public class CryptoUtil {
     }
 
     private SecretKey getSecretKey(String keyAlias) throws Exception {
-        KeyStore.SecretKeyEntry entry = (KeyStore.SecretKeyEntry) keyStore.getEntry(keyAlias, null);
+        KeyStore.ProtectionParameter param = providerName.equals("AndroidKeyStore") ? null : new KeyStore.PasswordProtection("test".toCharArray());
+        KeyStore.SecretKeyEntry entry = (KeyStore.SecretKeyEntry) keyStore.getEntry(keyAlias, param);
         return entry.getSecretKey();
     }
 

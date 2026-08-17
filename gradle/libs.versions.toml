@@ -2,6 +2,8 @@
 agp = "8.5.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
+mockito = "5.11.0"
+robolectric = "4.16.1"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
 material = "1.10.0"
@@ -19,6 +21,9 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycle" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-inline = { group = "org.mockito", name = "mockito-inline", version = "5.2.0" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
