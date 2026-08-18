@@ -40,6 +40,7 @@ public class ValidationUnitTest {
                 ValidationUtil.validateSignUp("Tester1", "test1!", "Tester1!").isValid);
         assertFalse("Invalid password confirmation should return false",
                 ValidationUtil.validateSignUp("Tester1", "Tester1!", "test1!").isValid);
-
+        assertFalse("Non-matching password and password confirmation should return false",
+                ValidationUtil.validateSignUp("Tester1", "Tester1!", "Tester2!").isValid);
     }
 }
