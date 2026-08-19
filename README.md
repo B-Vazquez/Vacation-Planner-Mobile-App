@@ -28,7 +28,7 @@ A secure and intuitive Android application designed to help users plan, organize
 1. Clone the repository.
 2. Open the project in Android Studio (Ladybug or later recommended).
 3. Build and run on an emulator or physical device (API 26+).
-4. Download the latest APK from the [official release page](https://b-vazquez.github.io/Vazquez-D424/).
+4. Download the latest APK from the [official release page](https://b-vazquez.github.io/Vacation-Planner-APK/).
 
 ---
 *For detailed operation, please refer to the 'Vacation Planner User Guide' included in the documentation folder.*
