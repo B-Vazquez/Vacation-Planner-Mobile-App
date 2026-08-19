@@ -60,6 +60,9 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Build Tools
+        run: echo "y" | sdkmanager "build-tools;29.0.3"
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -75,7 +78,6 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
-          buildToolsVersion: "34.0.0"
 
       - name: Checkout Destination Repo
         uses: actions/checkout@v4
