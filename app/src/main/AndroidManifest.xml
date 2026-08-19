@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.D308VacationPlanner"
+        android:theme="@style/Theme.VacationPlanner"
         tools:targetApi="31">
         <receiver
             android:name=".UI.MyReceiver"
